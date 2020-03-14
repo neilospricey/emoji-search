@@ -13,7 +13,7 @@ pipeline {
         }
         stage('buildContainer') {
             steps {
-                sh 'docker build -t emojiSearch:dev .'
+                sh 'docker build -t emoji-search:dev .'
             }
         }                
     }
