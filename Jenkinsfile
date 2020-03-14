@@ -16,5 +16,10 @@ pipeline {
                 sh 'docker build -t emoji-search:dev .'
             }
         }                
+        stage('deployToDev') {
+            steps {
+                sh 'ansible-playbook /opt/ansible/playbooks/dev_server_playbook.yaml'
+            }
+        }                
     }
 }
