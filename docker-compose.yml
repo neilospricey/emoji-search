@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  sample:
+    container_name: emojiSearch
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8081:3000'
+    environment:
+      - NODE_ENV=development

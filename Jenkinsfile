@@ -1,19 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('install-dependencies') {
+        stage('installDependencies') {
             steps {
                 sh 'npm install'
             }
         }
-        stage('run-tests') {
+        stage('runTests') {
             steps {
                 sh 'npm run test-ci'
             }
         }
-        stage('build') {
+        stage('buildContainer') {
             steps {
-                sh 'npm run build'
+                sh 'docker build -t emojiSearch:dev .'
             }
         }                
     }
