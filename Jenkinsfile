@@ -25,9 +25,6 @@ pipeline {
             }
         } 
         stage('deployToTest') {
-            when {
-                beforeInput  true                
-            }
             environment {
               STAGE = "Test"
             }            
