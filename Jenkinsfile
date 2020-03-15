@@ -13,7 +13,7 @@ pipeline {
         }
         stage('buildContainer') {
             steps {
-                sh 'docker build -t emoji-search:$BUILD_NUMBER .'
+                sh 'docker build -t emoji-search:$BUILD_NUMBER .; docker tag emoji-search:$BUILD_NUMBER emoji-search:latest'
             }
         }                
         stage('deployToDev') {
