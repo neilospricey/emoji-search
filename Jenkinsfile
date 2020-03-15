@@ -17,9 +17,6 @@ pipeline {
             }
         }                
         stage('deployToDev') {
-            when {
-                branch "master"
-            }
             environment {
               STAGE = "Dev"
             }            
@@ -29,7 +26,7 @@ pipeline {
         } 
         stage('deployToTest') {
             when {
-                branch "master"
+                beforeInput  true                
             }
             environment {
               STAGE = "Test"
