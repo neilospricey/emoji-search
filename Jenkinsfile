@@ -2,8 +2,24 @@ pipeline {
     agent any
     environment {
         CI = 'true'
+        GIT_COMMIT_AUTHOR = ''
+        GIT_COMMIT_EMAIL = '' 
     }
     stages {
+        stage('Pre') {
+            steps {
+                script {    
+                    GIT_COMMIT_AUTHOR = sh(returnStdout: true, script: "git log -1 --pretty=format:'%an'").trim()
+                }
+            }
+        }
+        stage('Pre2') {
+            steps {
+                script {    
+                    GIT_COMMIT_EMAIL = sh(returnStdout: true, script: "git log -1 --pretty=format:'%ae'").trim()
+                }
+            }
+        }                
         stage('installDependencies') {
             steps {
                 sh 'npm installs'
@@ -31,9 +47,9 @@ pipeline {
             }
         }                       
     }
-     post {  
+     post {
          failure {  
-             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL} <br> ${env.GIT_COMMIT} <br> ${env.GIT_AUTHOR_NAME} <br> ${env.GIT_AUTHOR_EMAIL} <br> ${env.GIT_URL} <br> ${env.GIT_BRANCH}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "neilospricey@gmail.com";
+             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL} <br> ${env.GIT_COMMIT} <br> ${env.GIT_COMMIT_AUTHOR} <br> ${env.GIT_COMMIT_EMAIL} <br> ${env.GIT_URL} <br> ${env.GIT_BRANCH}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "neilospricey@gmail.com";
          }  
      }      
 }
