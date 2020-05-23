@@ -1,13 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:6-alpine'
-            args '-p 3000:3000 -p 5000:5000'
-        }
-    }
-    environment {
-        CI = 'true'
-    }
+    agent any
     stages {
         stage('installDependencies') {
             steps {
@@ -25,15 +17,20 @@ pipeline {
             }
         }                
         stage('deployToDev') {
-            when {
-                branch 'master' 
-            }            
             environment {
               STAGE = "Dev"
             }            
             steps {
                 sh 'ansible-playbook /opt/ansible/playbooks/dev_server_playbook.yaml'
             }
-        }                       
+        } 
+        stage('deployToTest') {
+            environment {
+              STAGE = "Test"
+            }            
+            steps {
+                sh 'ansible-playbook /opt/ansible/playbooks/test_server_playbook.yaml'
+            }
+        }                        
     }
 }
