@@ -61,11 +61,8 @@ pipeline {
 
 def notifyFailed() {
     def mailRecipients = "neilospricey@gmail.com"
+    def emailBody = """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - ${env.BUILD_STATUS}"
     mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL} <br> ${env.GIT_COMMIT} <br> ${env.GIT_COMMIT_AUTHOR} <br> ${env.GIT_COMMIT_EMAIL} <br> ${env.GIT_URL} <br> ${env.GIT_BRANCH}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "neilospricey@gmail.com";
-    emailext (
-        subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-        to: "${mailRecipients}"
-    )
+    emailext(mimeType: 'text/html', replyTo: "${mailRecipients}", subject: emailSubject, to: "${mailRecipients}", body: emailBody)
 }
