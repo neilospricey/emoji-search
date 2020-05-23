@@ -11,7 +11,7 @@ export default class Header extends PureComponent {
           height="32"
           alt=""
         />
-        Emoji Search {process.env.REACT_APP_ENV} - <b>{process.env.NODE_ENV}</b>
+        Emoji Search {process.env.REACT_APP_ENV} - <b>{process.env.NODE_ENV} - testing123</b>
         <img
           src="//cdn.jsdelivr.net/emojione/assets/png/1f63a.png"
           width="32"
