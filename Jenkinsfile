@@ -55,22 +55,9 @@ pipeline {
         always {
             echo 'I will always say Hello again!'
             
-            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
             
         }
-        failure {  
-            notifyFailed()
-        }  
      }      
 }
 
-
-def notifyFailed() {
-    def mailRecipients = "neilospricey@gmail.com"
-    def emailBody = """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p><p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
-    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - ${env.BUILD_STATUS}"
-    mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL} <br> ${env.GIT_COMMIT} <br> ${env.GIT_COMMIT_AUTHOR} <br> ${env.GIT_COMMIT_EMAIL} <br> ${env.GIT_URL} <br> ${env.GIT_BRANCH}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "neilospricey@gmail.com";
-    emailext(mimeType: 'text/html', replyTo: '$DEFAULT_RECIPIENTS', subject: emailSubject, to: '$DEFAULT_RECIPIENTS', body: emailBody)
-}
