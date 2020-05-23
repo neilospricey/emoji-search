@@ -6,20 +6,21 @@ pipeline {
         GIT_COMMIT_EMAIL = '' 
     }
     stages {
-        stage('Pre') {
-            environment {
-                GIT_COMMIT_AUTHOR = sh(returnStdout: true, script: "git log -1 --pretty=format:'%an'").trim()
-            }            
+        stage('SetPostEnvVars') {     
             steps {
-                script {    
-                    sh "echo $GIT_COMMIT_AUTHOR; echo ${env.GIT_COMMIT_AUTHOR};"
+                script { 
+                    sh '''
+                        git log -1 --pretty=format:'%an') | tr "\n" " " > jenkins_envvars_name
+                        git log -1 --pretty=format:'%ae') | tr "\n" " " > jenkins_envvars_email
+                        git log -1 --pretty=oneline) | tr "\n" " " > jenkins_envvars_details
+                    '''   
                 }
             }
         }
         stage('Pre2') {
             steps {
                 script {    
-                    GIT_COMMIT_EMAIL = sh(returnStdout: true, script: "git log -1 --pretty=format:'%ae'").trim()
+                    sh 'cat jenkins_envvars_name; cat jenkins_envvars_email; cat jenkins_envvars_details'
                 }
             }
         }                
@@ -50,10 +51,7 @@ pipeline {
             }
         }                       
     }
-     post {
-        environment {
-            GIT_COMMIT_AUTHOR = sh(returnStdout: true, script: "git log -1 --pretty=format:'%an'").trim()
-        }          
+     post {      
         failure {  
              mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL of the build: ${env.BUILD_URL} <br> ${env.GIT_COMMIT} <br> ${env.GIT_COMMIT_AUTHOR} <br> ${env.GIT_COMMIT_EMAIL} <br> ${env.GIT_URL} <br> ${env.GIT_BRANCH}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "neilospricey@gmail.com";
         }  
