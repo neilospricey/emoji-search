@@ -10,9 +10,9 @@ pipeline {
             steps {
                 script { 
                     sh '''
-                        git log -1 --pretty=format:'%an') | tr "\n" " " > jenkins_envvars_name
-                        git log -1 --pretty=format:'%ae') | tr "\n" " " > jenkins_envvars_email
-                        git log -1 --pretty=oneline) | tr "\n" " " > jenkins_envvars_details
+                        git log -1 --pretty=format:'%an' | tr "\n" " " > jenkins_envvars_name
+                        git log -1 --pretty=format:'%ae' | tr "\n" " " > jenkins_envvars_email
+                        git log -1 --pretty=oneline | tr "\n" " " > jenkins_envvars_details
                     '''   
                 }
             }
