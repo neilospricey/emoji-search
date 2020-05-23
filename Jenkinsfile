@@ -7,10 +7,10 @@ pipeline {
     }
     stages {
         stage('Pre') {
+            environment {
+                GIT_COMMIT_AUTHOR = sh(returnStdout: true, script: "git log -1 --pretty=format:'%an'").trim()
+            }            
             steps {
-                environment {
-                    GIT_COMMIT_AUTHOR = sh(returnStdout: true, script: "git log -1 --pretty=format:'%an'").trim()
-                }
                 script {    
                     sh "echo $GIT_COMMIT_AUTHOR; echo ${env.GIT_COMMIT_AUTHOR};"
                 }
