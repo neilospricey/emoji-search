@@ -36,4 +36,4 @@ The Jenkins build does the following:
 * deploys the container to the dev environment, which is defined in Ansible which asserts the following desired state on the server:
     * installs server dependencies
     * runs react app in docker container
-* deploys the container to the test environment, which is defined in Ansible which asserts the desired state on the server using the same steps above.
+* deploys the container to the test environment, which is defined in Ansible which asserts the desired state on the server using the same steps above. 
